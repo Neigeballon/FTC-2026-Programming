@@ -1,0 +1,48 @@
+package org.firstinspires.ftc.teamcode;
+
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+
+@Autonomous(name = "Basic Auto", group = "Autonomous")
+public class BasicAuto extends LinearOpMode {
+
+    // Declare FTC Hardware components
+    private DcMotor leftDrive = null;
+    private DcMotor rightDrive = null;
+    private DcMotor intakeMotor = null;
+    private DcMotor shooterMotor = null;
+    private CRServo servo1Intake = null;
+    private CRServo servo2Intake = null;
+    private CRServo servoShooter = null;
+
+    @Override
+    public void runOpMode() {
+        // Initialize the hardware variables using the hardware map from the driver station
+        leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
+        rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
+        intakeMotor = hardwareMap.get(DcMotor.class, "intake_motor");
+        shooterMotor = hardwareMap.get(DcMotor.class, "shooter_motor");
+        servo1Intake = hardwareMap.get(CRServo.class, "servo_intake1");
+        servo2Intake = hardwareMap.get(CRServo.class, "servo_intake2");
+        servoShooter = hardwareMap.get(CRServo.class, "servo_shooter");
+
+        leftDrive.setDirection(DcMotor.Direction.FORWARD);
+        rightDrive.setDirection(DcMotor.Direction.REVERSE);
+
+        telemetry.addData("Status", "Ready for Auto");
+        telemetry.update();
+        waitForStart();
+
+        if (opModeIsActive()) {
+            //Add movements here in the format:
+            leftDrive.setPower(1.0);
+            rightDrive.setPower(1.0);
+            sleep(2000); //This determines how long it will be active.
+            leftDrive.setPower(0.0);
+            rightDrive.setPower(0.0);
+        }
+        
+    }
+}
