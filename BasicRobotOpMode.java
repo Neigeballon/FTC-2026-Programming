@@ -1,11 +1,11 @@
-package org.firstinspires.ftc.teamcode;//IS THE MOTOR A DC MOTOR? IF NOT, LOOK UP WHAT TO DO!!!
-//CHECK TO SEE IF THE LEFT AND RIGHT MOTORS WORK IN REVERSE OR NOT!!!
+package org.firstinspires.ftc.teamcode;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name = "Basic Robot OpMode", group = "Linear Opmode")
+@TeleOp//(name = "Basic Robot OpMode", group = "Linear Opmode") - add if necessary
 public class BasicRobotOpMode extends LinearOpMode {
 
     // Declare FTC Hardware components
@@ -19,6 +19,10 @@ public class BasicRobotOpMode extends LinearOpMode {
     private double speedMultiplier = 1.0;
     private boolean doesMultiply = false;
     private boolean lastState = false;
+    private double drive = 0;
+    private double turn = 0;
+    private double leftPower = 0;
+    private double rightPower = 0;
 
     @Override
     public void runOpMode() {
@@ -32,8 +36,8 @@ public class BasicRobotOpMode extends LinearOpMode {
         servoShooter = hardwareMap.get(CRServo.class, "servo_shooter");
 
         // Set motor directions if needed (e.g., reverse one side of the drive)
-        leftDrive.setDirection(DcMotor.Direction.FORWARD);
-        rightDrive.setDirection(DcMotor.Direction.REVERSE);
+        //leftDrive.setDirection(DcMotor.Direction.REVERSE);
+        //rightDrive.setDirection(DcMotor.Direction.FORWARD);
 
         // Wait for the game to start (driver presses PLAY)
         telemetry.addData("Status", "Initialized");
@@ -42,6 +46,8 @@ public class BasicRobotOpMode extends LinearOpMode {
 
         // Run while the match is running
         while (opModeIsActive()) {
+            telemetry.addData("Status", "Running");
+            telemetry.update();
             // Check the current state of the A button
             boolean currentState = gamepad1.a;
 
@@ -61,19 +67,19 @@ public class BasicRobotOpMode extends LinearOpMode {
             
             // Basic Arcade Drive logic using Gamepad 1
             // Y-axis is usually inverted on gamepads, so we negate it (-gamepad1.left_stick_y)
-            double drive = -gamepad1.left_stick_y;
-            double turn  =  gamepad1.right_stick_x;
+            drive = -this.gamepad1.left_stick_y;
+            turn  =  this.gamepad1.right_stick_x;
 
             if (Math.abs(drive) < 0.05) drive = 0;
             if (Math.abs(turn) < 0.05) turn = 0;
 
-            double leftPower  = rangeClip(drive + turn);
-            double rightPower = rangeClip(drive - turn);
-
+            leftPower = Range.clip(drive+turn, -1.0, 1.0);
+            rightPower = Range.clip(drive-turn, -1.0, 1.0);
+            
             leftDrive.setPower(leftPower*speedMultiplier);
             rightDrive.setPower(rightPower*speedMultiplier);
 
-            // Intake control (e.g., press A button)
+            // Intake control 
             
             if (gamepad2.left_trigger > 0.1) {
                 intakeMotor.setPower(-1.0);
@@ -91,7 +97,7 @@ public class BasicRobotOpMode extends LinearOpMode {
                 servo2Intake.setPower(0.0);
             }
 
-            // Shooter control (e.g., hold B button)
+            // Shooter control 
            
             if (gamepad2.right_trigger > 0.1) {
                 shooterMotor.setPower(-1.0);
@@ -107,8 +113,8 @@ public class BasicRobotOpMode extends LinearOpMode {
             }
 
             // Send telemetry data back to the Driver Station
-            telemetry.addData("Left Power", leftPower);
-            telemetry.addData("Right Power", rightPower);
+            telemetry.addData("Left Power", leftPower*speedMultiplier);
+            telemetry.addData("Right Power", rightPower*speedMultiplier);
             telemetry.addData("Intake Power", intakeMotor.getPower());
             telemetry.addData("Shooter Power", shooterMotor.getPower());
             telemetry.addData("Servo1Intake Power", servo1Intake.getPower());
@@ -116,10 +122,5 @@ public class BasicRobotOpMode extends LinearOpMode {
             telemetry.addData("ServoShooter Power", servoShooter.getPower());
             telemetry.update();
         }
-    }
-
-    // Helper method to keep motor power values between -1.0 and 1.0
-    private double rangeClip(double value) {
-        return Math.max(-1.0, Math.min(1.0, value));
     }
 }
