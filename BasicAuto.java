@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous(name = "Basic Auto", group = "Autonomous")
+@Autonomous//(name = "Basic Auto", group = "Autonomous")
 public class BasicAuto extends LinearOpMode {
 
     // Declare FTC Hardware components
