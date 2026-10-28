@@ -28,8 +28,8 @@ public class BasicAuto extends LinearOpMode {
         servo2Intake = hardwareMap.get(CRServo.class, "servo_intake2");
         servoShooter = hardwareMap.get(CRServo.class, "servo_shooter");
 
-        leftDrive.setDirection(DcMotor.Direction.FORWARD);
-        rightDrive.setDirection(DcMotor.Direction.REVERSE);
+        //leftDrive.setDirection(DcMotor.Direction.FORWARD);
+        //rightDrive.setDirection(DcMotor.Direction.REVERSE);
 
         telemetry.addData("Status", "Ready for Auto");
         telemetry.update();
